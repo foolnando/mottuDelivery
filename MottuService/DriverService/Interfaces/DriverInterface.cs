@@ -1,0 +1,1 @@
+public record ICreateDriverRequest(string cnpj, string name, string cnhNumber, string cnhType, DateOnly birthdate);
