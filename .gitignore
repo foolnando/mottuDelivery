@@ -1,0 +1,38 @@
+# Ignorar arquivos de compilação
+bin/
+obj/
+
+# Ignorar arquivos de dependências e caches
+*.user
+*.suo
+*.cache
+*.dll
+*.exe
+*.log
+*.vscode
+.vs/
+
+# Ignorar arquivos de configuração específicos do ambiente
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+*.sln.ide
+*.suo
+*.user
+*.vspscc
+*.vssscc
+
+# Ignorar arquivos gerados automaticamente
+_ReSharper*/
+*.resharper*
+*.DotSettings
+
+# Ignorar arquivos de build do Visual Studio
+*.suo
+*.user
+*.cache
+*.log
+*.vspscc
+*.vssscc
+*.build.csdef
