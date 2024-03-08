@@ -8,12 +8,29 @@ public static class RentVehicleController
     {
         var vehicleService = new VehicleService();
         var vehicleRouteGroup = app.MapGroup("vehicle");
+        
         vehicleRouteGroup.MapPost("", async (ICreateVehicleRequest request, MottuDataBaseContext dbContext) =>
         {
-            var registerVehicelResult = await vehicleService.CreateVehicle(request, dbContext);
-            Console.WriteLine(registerVehicelResult);
-            return registerVehicelResult;
+            try {
+                await vehicleService.CreateVehicle(request, dbContext);
+                return Results.Ok();
+            } catch(ConflictException) {
+                return Results.Conflict();
+            }
+            
 
         });
+
+        vehicleRouteGroup.MapGet("/{plate}", async (string plate, MottuDataBaseContext dbContext) =>
+        {
+           try {
+            var vehicles = await vehicleService.GetVehicle(plate, dbContext);
+            return Results.Ok(vehicles);
+            }
+            catch (NotFoundException)
+            {
+                return Results.NotFound();
+            }
+           });
     }
 }
