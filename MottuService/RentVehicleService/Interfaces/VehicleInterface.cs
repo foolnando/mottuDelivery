@@ -1,0 +1,1 @@
+public record ICreateVehicleRequest(string plate, string model, int year);
