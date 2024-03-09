@@ -15,5 +15,17 @@ public static class DriverController
             return registerDriverResult;
 
         });
+
+        driverRouteGroup.MapGet("/{cnpj}", async (string cnpj, MottuDataBaseContext dbContext) =>
+        {   
+           try {
+            var driver = await driverService.GetDriver(cnpj, dbContext);
+            return Results.Ok(driver);
+            }
+            catch (NotFoundException)
+            {
+                return Results.NotFound();
+            }
+           });
     }
 }

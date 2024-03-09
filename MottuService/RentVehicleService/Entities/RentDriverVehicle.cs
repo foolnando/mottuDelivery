@@ -7,28 +7,39 @@ public class RentDriverVehicle
     public Driver Driver { get; set; }
     public DateOnly StartDate { get; private set; }
     public DateOnly EndDate { get; private set; }
-    public float Value { get; private set; }
+    public double Value { get; private set; }
     public string Status { get; private set; }
     public DateOnly ExpectedEndDate { get; private set; }
-    public string Category { get; private set; }
+    public int NumberDaysToRent { get; private set; }
+    public ICollection<Order> Orders { get; set; }
+
+
 
 
 
     public RentDriverVehicle(Guid vehicleId, 
                              Guid driverId,
                              DateOnly startDate,
-                             DateOnly expectedEndDate,
-                             float value,
-                             string status,
-                             string category)
+                             int numberDaysToRent)
     {
         Id = Guid.NewGuid();
         VehicleId = vehicleId;
         DriverId = driverId;
         StartDate = startDate;
+        Status = "available";
+        NumberDaysToRent = numberDaysToRent;
+        Orders = new List<Order>();
+    }
+
+    public void UpdateRentVehicleExpectedEndDate(DateOnly expectedEndDate){
         ExpectedEndDate = expectedEndDate;
+    }
+
+    public void UpdateRentVehicleValue(double value){
         Value = value;
-        Status = status;
-        Category = category;
+    }
+
+    public void UpdateRentVehicleEndDate(DateOnly endDate){
+        EndDate = endDate;
     }
 }
