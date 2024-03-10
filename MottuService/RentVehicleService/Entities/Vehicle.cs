@@ -18,4 +18,8 @@ public class Vehicle
         Rents = new List<RentDriverVehicle>();
 
     }
+
+    public void UpdateVehiclePlate(string plate){
+        Plate = plate;
+    }
 }

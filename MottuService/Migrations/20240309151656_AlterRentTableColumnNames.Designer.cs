@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MottuService.DataBase;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MottuService.Migrations
 {
     [DbContext(typeof(MottuDataBaseContext))]
-    partial class MottuDataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240309151656_AlterRentTableColumnNames")]
+    partial class AlterRentTableColumnNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,63 +59,12 @@ namespace MottuService.Migrations
                     b.ToTable("Drivers");
                 });
 
-            modelBuilder.Entity("Order", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateOnly>("CreatedAt")
-                        .HasColumnType("date");
-
-                    b.Property<DateOnly>("DeliveryDate")
-                        .HasColumnType("date");
-
-                    b.Property<Guid>("RentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("Value")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RentId");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("OrderNotification", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("DriverId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DriverId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("Notifications");
-                });
-
             modelBuilder.Entity("RentDriverVehicle", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("DriverId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("DriverId")
+                    b.Property<Guid>("VehicleId")
                         .HasColumnType("uuid");
 
                     b.Property<DateOnly>("EndDate")
@@ -120,6 +72,9 @@ namespace MottuService.Migrations
 
                     b.Property<DateOnly>("ExpectedEndDate")
                         .HasColumnType("date");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("NumberDaysToRent")
                         .HasColumnType("integer");
@@ -134,12 +89,7 @@ namespace MottuService.Migrations
                     b.Property<double>("Value")
                         .HasColumnType("double precision");
 
-                    b.Property<Guid>("VehicleId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DriverId");
+                    b.HasKey("DriverId", "VehicleId");
 
                     b.HasIndex("VehicleId");
 
@@ -172,36 +122,6 @@ namespace MottuService.Migrations
                     b.ToTable("Vehicles");
                 });
 
-            modelBuilder.Entity("Order", b =>
-                {
-                    b.HasOne("RentDriverVehicle", "Rent")
-                        .WithMany("Orders")
-                        .HasForeignKey("RentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Rent");
-                });
-
-            modelBuilder.Entity("OrderNotification", b =>
-                {
-                    b.HasOne("Driver", "Driver")
-                        .WithMany("Notifications")
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Order", "Order")
-                        .WithMany("Notifications")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Driver");
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("RentDriverVehicle", b =>
                 {
                     b.HasOne("Driver", "Driver")
@@ -223,19 +143,7 @@ namespace MottuService.Migrations
 
             modelBuilder.Entity("Driver", b =>
                 {
-                    b.Navigation("Notifications");
-
                     b.Navigation("Rents");
-                });
-
-            modelBuilder.Entity("Order", b =>
-                {
-                    b.Navigation("Notifications");
-                });
-
-            modelBuilder.Entity("RentDriverVehicle", b =>
-                {
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Vehicle", b =>

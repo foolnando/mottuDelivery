@@ -4,7 +4,13 @@ using MottuService.DataBase;
 
 public class DriverService
 {
-
+    public async Task<List<Driver>> GetDriver(string cnpj, MottuDataBaseContext dbContext) {
+            var drivers = await dbContext.Drivers.Where(vehicle => vehicle.Cnpj == cnpj).ToListAsync();
+            if(drivers.Count == 0) {
+                throw new NotFoundException();
+            }
+            return drivers;
+        }
     public async Task<bool> IsDriverRegistered(string cnpj, MottuDataBaseContext dbContext)
     {
         return await dbContext.Drivers.AnyAsync(driver => driver.Cnpj == cnpj);
