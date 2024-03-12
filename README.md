@@ -9,7 +9,7 @@ Antes de começar, certifique-se de ter os seguintes pré-requisitos instalados 
 - Docker: [Instalação do Docker](https://docs.docker.com/get-docker/)
 - .NET Core SDK: [Instalação do .NET Core SDK](https://dotnet.microsoft.com/download)
 
-## Como usar
+## Como rodar o projeto
 
 Siga estas etapas para executar a aplicação em um contêiner Docker:
 
