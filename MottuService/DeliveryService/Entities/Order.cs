@@ -6,7 +6,7 @@ public class Order
 
     public string Status { get; private set; }
     public double Value { get; private set; }
-    public Guid RentId { get; private set; }
+    public Guid? RentId { get; private set; }
     public RentDriverVehicle Rent { get; set; }
     public ICollection<OrderNotification> Notifications { get; set; }
 
@@ -20,6 +20,14 @@ public class Order
        Id = Guid.NewGuid();
        Notifications = new List<OrderNotification>();
 
+    }
+
+    public void UpdateOrderStatus(string status){
+        Status = status;
+    }
+
+    public void UpdateOrderDeliveryDate(DateOnly deliveryDate){
+        DeliveryDate = deliveryDate;
     }
 
 }
