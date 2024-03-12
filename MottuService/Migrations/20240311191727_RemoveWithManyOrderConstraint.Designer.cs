@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MottuService.DataBase;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MottuService.Migrations
 {
     [DbContext(typeof(MottuDataBaseContext))]
-    partial class MottuDataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240311191727_RemoveWithManyOrderConstraint")]
+    partial class RemoveWithManyOrderConstraint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,7 +71,10 @@ namespace MottuService.Migrations
                     b.Property<DateOnly>("DeliveryDate")
                         .HasColumnType("date");
 
-                    b.Property<Guid?>("RentId")
+                    b.Property<Guid?>("RentDriverVehicleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RentId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Status")
@@ -79,6 +85,8 @@ namespace MottuService.Migrations
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RentDriverVehicleId");
 
                     b.HasIndex("RentId");
 
@@ -174,6 +182,10 @@ namespace MottuService.Migrations
 
             modelBuilder.Entity("Order", b =>
                 {
+                    b.HasOne("RentDriverVehicle", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("RentDriverVehicleId");
+
                     b.HasOne("RentDriverVehicle", "Rent")
                         .WithMany()
                         .HasForeignKey("RentId");
@@ -229,6 +241,11 @@ namespace MottuService.Migrations
             modelBuilder.Entity("Order", b =>
                 {
                     b.Navigation("Notifications");
+                });
+
+            modelBuilder.Entity("RentDriverVehicle", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Vehicle", b =>

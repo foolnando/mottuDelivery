@@ -4,6 +4,8 @@ namespace MottuService.DataBase;
 
 public class MottuDataBaseContext : DbContext
 {
+    public static readonly ILoggerFactory Logger
+        = LoggerFactory.Create(builder => { builder.AddConsole(); });
     public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<Driver> Drivers { get; set; }
     public DbSet<RentDriverVehicle> Rents { get; set; }
@@ -47,14 +49,17 @@ public class MottuDataBaseContext : DbContext
 
         modelBuilder.Entity<Order>()
             .HasOne(o => o.Rent)
-            .WithMany(r => r.Orders)
-            .HasForeignKey(n => n.RentId);
+            .WithMany()
+            .HasForeignKey(n => n.RentId)
+            .IsRequired(false);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseNpgsql("Host=localhost;Database=mottu;Username=postgres;Password=postgres");
         optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
+        optionsBuilder
+            .UseLoggerFactory(Logger);
         optionsBuilder.EnableSensitiveDataLogging();
     }
 

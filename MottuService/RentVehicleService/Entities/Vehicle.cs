@@ -22,4 +22,8 @@ public class Vehicle
     public void UpdateVehiclePlate(string plate){
         Plate = plate;
     }
+
+    public void UpdateVehicleStatus(string status){
+        Status = status;
+    }
 }

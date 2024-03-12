@@ -45,6 +45,17 @@ public static class RentVehicleController
         }
         );
 
+        vehicleRouteGroup.MapDelete("/{id}", async (Guid id, MottuDataBaseContext dbContext) => {
+            try {
+                await vehicleService.DeleteVehicle(id, dbContext);
+                return Results.Ok();
+            } catch (NotFoundException) {
+                return Results.NotFound();
+
+            }
+        }
+        );
+
         vehicleRouteGroup.MapPost("/rent",async (ICreateRentVehicleRequest request, MottuDataBaseContext dbContext) => {
             try {
                 rentVehicleServiceValidator.ValidadeRentVehicleRequest(request);
@@ -56,7 +67,7 @@ public static class RentVehicleController
         });
 
         vehicleRouteGroup.MapPost("/rent/excharge",async (IGetExpectedValueChargeRequest request, MottuDataBaseContext dbContext) => {
-            await vehicleService.GetRentVehicleExcharge(request.rentId, request.endDate, dbContext);
+           return await vehicleService.GetRentVehicleExcharge(request.rentId, request.endDate, dbContext);
         });
     }
 }

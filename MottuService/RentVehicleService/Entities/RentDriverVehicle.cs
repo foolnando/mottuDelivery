@@ -11,7 +11,6 @@ public class RentDriverVehicle
     public string Status { get; private set; }
     public DateOnly ExpectedEndDate { get; private set; }
     public int NumberDaysToRent { get; private set; }
-    public ICollection<Order> Orders { get; set; }
 
 
 
@@ -19,16 +18,14 @@ public class RentDriverVehicle
 
     public RentDriverVehicle(Guid vehicleId, 
                              Guid driverId,
-                             DateOnly startDate,
                              int numberDaysToRent)
     {
         Id = Guid.NewGuid();
         VehicleId = vehicleId;
         DriverId = driverId;
-        StartDate = startDate;
+        StartDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
         Status = "available";
         NumberDaysToRent = numberDaysToRent;
-        Orders = new List<Order>();
     }
 
     public void UpdateRentVehicleExpectedEndDate(DateOnly expectedEndDate){
@@ -41,5 +38,8 @@ public class RentDriverVehicle
 
     public void UpdateRentVehicleEndDate(DateOnly endDate){
         EndDate = endDate;
+    }
+    public void UpdateRentVehicleStatus(string status){
+        Status = status;
     }
 }
